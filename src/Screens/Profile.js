@@ -6,13 +6,14 @@ class Profile extends React.Component {
     title: 'DAMN',
   };
   render() {
+    fetch('https://www.google.pt');
     const { navigate } = this.props.navigation;
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text>Profile Screen</Text>
         <Button
-          title="Go to Home"
-          onPress={() => this.props.navigation.navigate('Home')}
+          title="Go to ReactScreensExample"
+          onPress={() => this.props.navigation.navigate('ReactScreens')}
         />
       </View>
     );

@@ -18,7 +18,7 @@ import Tabs from './tabs';
 import Navigation from './navigation';
 import NavigationTabsAndStack from './navigationTabsAndStack';
 
-// useScreens();
+useScreens();
 
 const SCREENS = {
   Stack: { screen: Stack, title: 'Stack example' },

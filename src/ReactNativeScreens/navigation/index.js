@@ -7,6 +7,8 @@ import {
   Animated,
   Image,
   requireNativeComponent,
+  Text,
+  AppState
 } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 // import { createStackNavigator } from './react-navigation/react-navigation';
@@ -36,27 +38,41 @@ const Background = ({ index }) => (
   />
 );
 
+/***** TEST MEMORY - use large number like 1000000 */
+const SIZE = 1;
+/**** */
 class DetailsScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: 'Details screen #' + navigation.getParam('index', '0'),
     };
   };
+  interval;
+  _test;
+  memory = new Array(SIZE).join('|');
   animvalue = new Animated.Value(0);
   rotation = this.animvalue.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '360deg'],
   });
   state = { count: 1, text: '' };
+  _handleAppState = nextAppState => {
+    if (nextAppState === 'active') {
+      this.interval = setInterval(this.refresh, 1000);
+    } else {
+      clearInterval(this.interval);
+    }
+  }
   componentDidMount() {
-    Animated.loop(
-      Animated.timing(this.animvalue, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: false,
-      })
-    ).start();
-    setInterval(() => this.setState({ count: this.state.count + 1 }), 500);
+    AppState.addEventListener('change', this._handleAppState);
+    this.interval = setInterval(this.refresh, 1000);
+  }
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._handleAppState);
+    clearInterval(this.interval);
+  }
+  refresh = () => {
+    this.setState({ count: this.state.count + 1 });
   }
   render() {
     const index = this.props.navigation.getParam('index', 0);
@@ -71,6 +87,10 @@ class DetailsScreen extends React.Component {
             })
           }
         />
+        <Text>
+          Allocated {SIZE} bytes, go back to see the memory gets retained
+        </Text>
+        <Text>Foreground time counter: {this.state.count} sec</Text>
         <TextInput
           placeholder="Hello"
           style={styles.textInput}

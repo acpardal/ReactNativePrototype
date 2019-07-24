@@ -4,6 +4,7 @@ import { createStackNavigator, createAppContainer, createBottomTabNavigator } fr
 import Home from './Screens/Home';
 import Details from './Screens/Details';
 import Profile from './Screens/Profile';
+import reactScreensExample from './ReactNativeScreens/App'
 const AppNavigator = createStackNavigator(
   {
     Home,
@@ -21,7 +22,7 @@ const HomeStack = createStackNavigator({
 
 const SettingsStack = createStackNavigator({
   Profile,
-  Settings: Home,
+  ReactScreens: reactScreensExample,
 });
 
 const TabNavigator = createBottomTabNavigator(
